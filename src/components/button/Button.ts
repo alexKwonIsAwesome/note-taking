@@ -24,7 +24,7 @@ $xlButtonTemplate.innerHTML = /* html */ `
       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
     "
   >
-    <div data-flag="children"></div>
+    <div data-target="children"></div>
   </button>
 `;
 
@@ -47,7 +47,7 @@ $lgButtonTemplate.innerHTML = /* html */ `
       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
     "
   >
-    <div data-flag="children"></div>
+    <div data-target="children"></div>
   </button>
 `;
 
@@ -70,7 +70,7 @@ $baseButtonTemplate.innerHTML = /* html */ `
       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
     "
   >
-    <div data-flag="children"></div>
+    <div data-target="children"></div>
   </button>
 `;
 
@@ -94,7 +94,7 @@ $smButtonTemplate.innerHTML = /* html */ `
       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
     "
   >
-    <div data-flag="children"></div>
+    <div data-target="children"></div>
   </button>
 `;
 
@@ -117,7 +117,7 @@ $xsButtonTemplate.innerHTML = /* html */ `
       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
     "
   >
-    <div data-flag="children"></div>
+    <div data-target="children"></div>
   </button>
 `;
 
@@ -161,9 +161,9 @@ export const createButton = ({ size, children, onClick }: Props) => {
     $element.addEventListener('click', onClick);
   }
 
-  const $childrenFlag = $element.querySelector('[data-flag="children"]');
-  if ($childrenFlag) {
-    $childrenFlag.replaceWith(children ?? '');
+  const $childrenTarget = $element.querySelector('[data-target="children"]');
+  if ($childrenTarget) {
+    $childrenTarget.replaceWith(children ?? '');
   }
 
   return $element;
