@@ -30,10 +30,12 @@ $selectedTabTemplate.innerHTML = /* html */ `
 
 export type TabKey = string | number;
 
-interface Props {
+export type Tab = {
   key: TabKey;
-  activeKey: TabKey;
   name: string;
+};
+interface Props extends Tab {
+  activeKey: TabKey;
   onClick: (key: TabKey) => void;
 }
 

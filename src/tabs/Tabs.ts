@@ -1,4 +1,4 @@
-import { createTab, TabKey } from './Tab';
+import { createTab, Tab, TabKey } from './Tab';
 
 const $pillWhiteBgTabsTemplate = document.createElement('template');
 $pillWhiteBgTabsTemplate.innerHTML = /* html */ `
@@ -12,7 +12,7 @@ $pillWhiteBgTabsTemplate.innerHTML = /* html */ `
 interface Props {
   kind?: 'pill' | 'underline';
   bgStyle?: 'white' | 'gray';
-  tabs?: { key: TabKey; name: string }[];
+  tabs?: Tab[];
   activeKey?: TabKey;
   onChange?: (key: TabKey) => void;
 }
