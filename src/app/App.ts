@@ -5,7 +5,7 @@ import { createNoteCard, Note } from '../note-card/NoteCard';
 const $template = document.createElement('template');
 
 $template.innerHTML = /* html */ `
-  <div class="bg-gray-100">
+  <div class="bg-gray-100 min-h-screen">
     <div class="p-4 md:p-6">
       <div class="flex justify-between items-center">
         <div class="text-xl font-semibold text-gray-700">Note Taking</div>
@@ -24,12 +24,21 @@ $template.innerHTML = /* html */ `
 const NOTES = 'notes';
 const ARCHIVED = 'archived';
 
+type Category = 'notes' | 'archived';
+
 interface Props {
-  category: 'notes' | 'archived';
+  activeCategory: Category;
+  onCategoryChange?: (category: Category) => void;
   notes: Note[];
+  // onNoteClick?: (note: Note) => void;
+  // onCreate?: () => void;
 }
 
-export const createApp = ({ category, notes }: Props) => {
+export const createApp = ({
+  activeCategory,
+  onCategoryChange,
+  notes,
+}: Props) => {
   const $element = $template.content.firstElementChild!.cloneNode(
     true
   ) as HTMLElement;
@@ -57,25 +66,32 @@ export const createApp = ({ category, notes }: Props) => {
           name: 'Archived',
         },
       ],
-      activeKey: category,
+      activeKey: activeCategory,
       onChange: (key) => {
-        console.log('Clicked', key);
+        if (onCategoryChange) {
+          onCategoryChange(key as Category);
+        }
       },
     })
   );
 
   const $noteCardsFragment = new DocumentFragment();
-  notes.forEach(({ title, content }) => {
-    $noteCardsFragment.appendChild(
-      createNoteCard({
-        title,
-        content,
-        onClick: () => {
-          console.log('Clicked note card');
-        },
-      })
-    );
-  });
+  notes
+    .filter(({ isArchived }) => {
+      return activeCategory === 'archived' ? isArchived : !isArchived;
+    })
+    .forEach(({ title, content }) => {
+      $noteCardsFragment.appendChild(
+        createNoteCard({
+          title,
+          content,
+          isArchived: false,
+          onClick: () => {
+            console.log('Clicked note card');
+          },
+        })
+      );
+    });
   $element
     .querySelector('[data-target="note-cards"]')!
     .replaceWith($noteCardsFragment);

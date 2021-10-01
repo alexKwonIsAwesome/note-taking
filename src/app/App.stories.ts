@@ -12,59 +12,72 @@ const Template: Story<Parameters<typeof createApp>[0]> = (args) => {
 
 export const Primary = Template.bind({});
 Primary.args = {
-  category: 'notes',
+  activeCategory: 'notes',
   notes: [
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
     {
       title: 'Note Title',
       content: 'Lorem ipsum dolor sit amet.',
+      isArchived: false,
     },
   ],
 };

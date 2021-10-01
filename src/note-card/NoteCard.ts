@@ -26,6 +26,7 @@ $childrenTemplate.innerHTML = /* html */ `
 export interface Note {
   title: string;
   content: string;
+  isArchived: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
