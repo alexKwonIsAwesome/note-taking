@@ -5,8 +5,7 @@ $template.innerHTML = /* html */ `
     type="button"
     class="
       shadow-sm
-      py-3
-      px-4
+      p-4
       rounded-lg
       bg-white
       border border-gray-300
