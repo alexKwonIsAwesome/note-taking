@@ -23,15 +23,24 @@ $childrenTemplate.innerHTML = /* html */ `
   </div>
 `;
 
-interface Props {
+export interface Note {
   title: string;
   content: string;
 }
 
-export const createNoteCard = ({ title, content }: Props) => {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface Props extends Note {
+  onClick: () => void;
+}
+
+export const createNoteCard = ({ title, content, onClick }: Props) => {
   const $element = $template.content.firstElementChild!.cloneNode(
     true
   ) as HTMLElement;
+
+  if (onClick) {
+    $element.addEventListener('click', onClick);
+  }
 
   const $children = $childrenTemplate.content.firstElementChild!.cloneNode(
     true
