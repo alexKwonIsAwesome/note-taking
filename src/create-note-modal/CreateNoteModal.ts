@@ -71,7 +71,7 @@ $template.innerHTML = /* html */ `
           sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6
         "
       >
-        <div class="hidden sm:block absolute top-0 right-0 pt-6 pr-6">
+        <div class="absolute top-0 right-0 pt-6 pr-6">
           <button
             data-target="close-button"
             type="button"
