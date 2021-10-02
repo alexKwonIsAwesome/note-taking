@@ -1,3 +1,3 @@
 # Note Taking - Vanilla
 
-Note-taking web app. Built without using any front-end framework/library.
+Note-taking web app. Built it without using any front-end framework/library.
