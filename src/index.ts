@@ -67,7 +67,7 @@ const render = () => {
       activeNote: state.activeNote,
       createModal: {
         isOpen: state.createModal.isOpen,
-        onCancel: () => {
+        onClose: () => {
           state.createModal.isOpen = false;
           render();
         },

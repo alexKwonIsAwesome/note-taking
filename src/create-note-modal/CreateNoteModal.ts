@@ -214,14 +214,10 @@ $template.innerHTML = /* html */ `
 interface Props {
   isOpen: boolean;
   onCreate: (note: Note) => void;
-  onCancel: () => void;
+  onClose: () => void;
 }
 
-export const createCreateNoteModal = ({
-  isOpen,
-  onCreate,
-  onCancel,
-}: Props) => {
+export const createCreateNoteModal = ({ isOpen, onCreate, onClose }: Props) => {
   if (!isOpen) {
     return new DocumentFragment();
   }
@@ -233,19 +229,19 @@ export const createCreateNoteModal = ({
   $element
     .querySelector('[data-target="bg-overlay"]')!
     .addEventListener('click', () => {
-      onCancel();
+      onClose();
     });
 
   $element
     .querySelector('[data-target="close-button"]')!
     .addEventListener('click', () => {
-      onCancel();
+      onClose();
     });
 
   $element
     .querySelector('[data-target="cancel-button"]')!
     .addEventListener('click', () => {
-      onCancel();
+      onClose();
     });
 
   const $form = $element.querySelector(

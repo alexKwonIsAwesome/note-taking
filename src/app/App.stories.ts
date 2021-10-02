@@ -85,7 +85,7 @@ Primary.args = {
     onCreate: () => {
       console.log('create');
     },
-    onCancel: () => {
+    onClose: () => {
       console.log('cancel');
     },
   },

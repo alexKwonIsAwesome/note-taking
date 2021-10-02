@@ -38,7 +38,7 @@ interface Props {
   activeNote: Note | null;
   createModal: {
     isOpen: boolean;
-    onCancel: () => void;
+    onClose: () => void;
     onCreate: (note: Note) => void;
   };
   manageModal: {
@@ -73,6 +73,22 @@ export const createApp = ({
   const $element = $template.content.firstElementChild!.cloneNode(
     true
   ) as HTMLElement;
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key !== 'Escape') {
+      return;
+    }
+
+    if (createModal.isOpen) {
+      createModal.onClose();
+      return;
+    }
+
+    if (manageModal.isOpen) {
+      manageModal.onClose();
+      return;
+    }
+  });
 
   $element.querySelector('[data-target="create-button"]')!.replaceWith(
     createButton({
@@ -131,7 +147,7 @@ export const createApp = ({
     $element.querySelector('[data-target="create-note-modal"]')!.replaceWith(
       createCreateNoteModal({
         isOpen: createModal.isOpen,
-        onCancel: createModal.onCancel,
+        onClose: createModal.onClose,
         onCreate: createModal.onCreate,
       })
     );

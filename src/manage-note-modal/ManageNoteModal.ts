@@ -331,13 +331,13 @@ export const createManageNoteModal = ({
     true
   ) as HTMLElement;
 
-  const closeMoreMenuHandler = () => {
+  const handleCloseMoreMenu = () => {
     if (isMoreMenuOpen) {
       onCloseMoreMenu();
-      document.removeEventListener('click', closeMoreMenuHandler);
+      document.removeEventListener('click', handleCloseMoreMenu);
     }
   };
-  document.addEventListener('click', closeMoreMenuHandler);
+  document.addEventListener('click', handleCloseMoreMenu);
 
   $element
     .querySelector('[data-target="bg-overlay"]')!
