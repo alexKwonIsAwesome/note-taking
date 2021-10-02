@@ -2,6 +2,7 @@ import { createTabs } from '../tabs/Tabs';
 import { createButton } from '../button/Button';
 import { createNoteCard, Note } from '../note-card/NoteCard';
 import { createCreateNoteModal } from '../create-note-modal/CreateNoteModal';
+import { createManageNoteModal } from '../manage-note-modal/ManageNoteModal';
 
 const $template = document.createElement('template');
 
@@ -22,39 +23,52 @@ $template.innerHTML = /* html */ `
       </div>
     </div>
     <div data-target="create-note-modal"></div>
+    <div data-target="manage-note-modal"></div>
   </div>
 `;
 
 const NOTES = 'notes';
 const ARCHIVED = 'archived';
 
-type Category = 'notes' | 'archived';
+export type Category = 'notes' | 'archived';
 
 interface Props {
   activeCategory: Category;
   notes: Note[];
+  activeNote: Note | null;
   createModal: {
     isOpen: boolean;
     onCancel: () => void;
     onCreate: (note: Note) => void;
   };
-  manageModal?: {
+  manageModal: {
     isOpen: boolean;
-    onCancel: () => void;
-    onSave: () => void;
+    isMoreMenuOpen: boolean;
+    onClose: () => void;
+    onSave: (
+      noteRef: Note,
+      { title, content }: { title: Note['title']; content: Note['content'] }
+    ) => void;
+    onOpenMoreMenu: () => void;
+    onCloseMoreMenu: () => void;
+    onArchive: (note: Note) => void;
+    onUnarchive: (note: Note) => void;
+    onDelete: (note: Note) => void;
   };
-  onCategoryChange?: (category: Category) => void;
+  onCategoryChange: (category: Category) => void;
   onCreateButtonClick: () => void;
-  // onNoteClick?: (note: Note) => void;
-  // onCreate?: () => void;
+  onNoteClick: (note: Note) => void;
 }
 
 export const createApp = ({
   activeCategory,
   onCategoryChange,
   notes,
+  activeNote,
   createModal,
+  manageModal,
   onCreateButtonClick,
+  onNoteClick,
 }: Props) => {
   const $element = $template.content.firstElementChild!.cloneNode(
     true
@@ -85,9 +99,7 @@ export const createApp = ({
       ],
       activeKey: activeCategory,
       onChange: (key) => {
-        if (onCategoryChange) {
-          onCategoryChange(key as Category);
-        }
+        onCategoryChange(key as Category);
       },
     })
   );
@@ -97,7 +109,8 @@ export const createApp = ({
     .filter(({ isArchived }) => {
       return activeCategory === 'archived' ? isArchived : !isArchived;
     })
-    .forEach(({ title, content }) => {
+    .forEach((note) => {
+      const { title, content } = note;
       $noteCardsFragment.appendChild(
         createNoteCard({
           title,
@@ -105,6 +118,7 @@ export const createApp = ({
           isArchived: false,
           onClick: () => {
             console.log('Clicked note card');
+            onNoteClick(note);
           },
         })
       );
@@ -119,6 +133,23 @@ export const createApp = ({
         isOpen: createModal.isOpen,
         onCancel: createModal.onCancel,
         onCreate: createModal.onCreate,
+      })
+    );
+  }
+
+  if (manageModal.isOpen && activeNote) {
+    $element.querySelector('[data-target="manage-note-modal"]')!.replaceWith(
+      createManageNoteModal({
+        note: activeNote,
+        isOpen: manageModal.isOpen,
+        isMoreMenuOpen: manageModal.isMoreMenuOpen,
+        onSave: manageModal.onSave,
+        onClose: manageModal.onClose,
+        onOpenMoreMenu: manageModal.onOpenMoreMenu,
+        onCloseMoreMenu: manageModal.onCloseMoreMenu,
+        onArchive: manageModal.onArchive,
+        onUnarchive: manageModal.onUnarchive,
+        onDelete: manageModal.onDelete,
       })
     );
   }

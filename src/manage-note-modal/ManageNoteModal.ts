@@ -23,15 +23,15 @@ $template.innerHTML = /* html */ `
       "
     >
       <!--
-      Background overlay, show/hide based on modal state.
+    Background overlay, show/hide based on modal state.
 
-      Entering: "ease-out duration-300"
-        From: "opacity-0"
-        To: "opacity-100"
-      Leaving: "ease-in duration-200"
-        From: "opacity-100"
-        To: "opacity-0"
-    -->
+    Entering: "ease-out duration-300"
+      From: "opacity-0"
+      To: "opacity-100"
+    Leaving: "ease-in duration-200"
+      From: "opacity-100"
+      To: "opacity-0"
+  -->
       <div
         data-target="bg-overlay"
         class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
@@ -46,15 +46,15 @@ $template.innerHTML = /* html */ `
       >
 
       <!--
-      Modal panel, show/hide based on modal state.
+    Modal panel, show/hide based on modal state.
 
-      Entering: "ease-out duration-300"
-        From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-        To: "opacity-100 translate-y-0 sm:scale-100"
-      Leaving: "ease-in duration-200"
-        From: "opacity-100 translate-y-0 sm:scale-100"
-        To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-    -->
+    Entering: "ease-out duration-300"
+      From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+      To: "opacity-100 translate-y-0 sm:scale-100"
+    Leaving: "ease-in duration-200"
+      From: "opacity-100 translate-y-0 sm:scale-100"
+      To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+  -->
       <div
         class="
           inline-block
@@ -71,10 +71,47 @@ $template.innerHTML = /* html */ `
         "
       >
         <div class="hidden sm:block absolute top-0 right-0 pt-6 pr-6">
+          <div class="relative inline-block">
+            <button
+              data-target="more-menu-button"
+              type="button"
+              class="
+                bg-white
+                rounded-md
+                text-gray-400
+                hover:text-gray-500
+                focus:outline-none
+                focus:ring-2
+                focus:ring-offset-2
+                focus:ring-gray-500
+              "
+            >
+              <span class="sr-only">More</span>
+              <!-- Heroicon name: outline/x -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                />
+              </svg>
+            </button>
+
+            <div data-target="more-menu"></div>
+          </div>
+
           <button
             data-target="close-button"
             type="button"
             class="
+              ml-4
               bg-white
               rounded-md
               text-gray-400
@@ -106,17 +143,20 @@ $template.innerHTML = /* html */ `
         </div>
 
         <form data-target="form">
-          <h3
-            class="text-lg leading-6 font-medium text-gray-900"
-            id="modal-title"
-          >
-            Create note
-          </h3>
+          <!-- <h3
+          class="text-lg leading-6 font-medium text-gray-900"
+          id="modal-title"
+        >
+          Create note
+        </h3> -->
 
           <div class="mt-6">
-            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+            <label for="title" class="block text-sm font-medium text-gray-700"
+              >Title</label
+            >
             <div class="mt-1">
               <input
+                data-target="title-input"
                 type="text"
                 name="title"
                 id="title"
@@ -139,6 +179,7 @@ $template.innerHTML = /* html */ `
             >
             <div class="mt-1">
               <textarea
+                data-target="content-textarea"
                 id="content"
                 name="content"
                 rows="3"
@@ -201,7 +242,7 @@ $template.innerHTML = /* html */ `
                   focus:ring-gray-500
                 "
               >
-                Create
+                Save
               </button>
             </div>
           </div>
@@ -211,16 +252,76 @@ $template.innerHTML = /* html */ `
   </div>
 `;
 
+const $moreMenuTemplate = document.createElement('template');
+$moreMenuTemplate.innerHTML = /* html */ `
+  <div
+    class="
+      origin-top-right
+      absolute
+      right-0
+      mt-2
+      w-56
+      rounded-md
+      shadow-lg
+      bg-white
+      ring-1 ring-black ring-opacity-5
+      focus:outline-none
+    "
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby="menu-button"
+    tabindex="-1"
+  >
+    <div class="py-1" role="none">
+      <a
+        data-target="archive-menu-item"
+        href="#"
+        class="text-gray-700 block px-4 py-2 text-sm hover:text-gray-900 hover:bg-gray-100"
+        role="menuitem"
+        tabindex="-1"
+        id="menu-item-0"
+        >Archive</a
+      >
+      <a
+        data-target="delete-menu-item"
+        href="#"
+        class="text-gray-700 block px-4 py-2 text-sm hover:text-gray-900 hover:bg-gray-100"
+        role="menuitem"
+        tabindex="-1"
+        id="menu-item-1"
+        >Delete</a
+      >
+    </div>
+  </div>
+`;
+
 interface Props {
+  note: Note;
   isOpen: boolean;
-  onCreate: (note: Note) => void;
-  onCancel: () => void;
+  isMoreMenuOpen: boolean;
+  onSave: (
+    noteRef: Note,
+    { title, content }: { title: Note['title']; content: Note['content'] }
+  ) => void;
+  onClose: () => void;
+  onOpenMoreMenu: () => void;
+  onCloseMoreMenu: () => void;
+  onArchive: (note: Note) => void;
+  onUnarchive: (note: Note) => void;
+  onDelete: (note: Note) => void;
 }
 
-export const createCreateNoteModal = ({
+export const createManageNoteModal = ({
+  note,
   isOpen,
-  onCreate,
-  onCancel,
+  isMoreMenuOpen,
+  onSave,
+  onClose,
+  onOpenMoreMenu,
+  onCloseMoreMenu,
+  onArchive,
+  onUnarchive,
+  onDelete,
 }: Props) => {
   if (!isOpen) {
     return new DocumentFragment();
@@ -230,22 +331,36 @@ export const createCreateNoteModal = ({
     true
   ) as HTMLElement;
 
+  const closeMoreMenuHandler = () => {
+    if (isMoreMenuOpen) {
+      onCloseMoreMenu();
+      document.removeEventListener('click', closeMoreMenuHandler);
+    }
+  };
+  document.addEventListener('click', closeMoreMenuHandler);
+
   $element
     .querySelector('[data-target="bg-overlay"]')!
     .addEventListener('click', () => {
-      onCancel();
+      onClose();
     });
 
   $element
     .querySelector('[data-target="close-button"]')!
     .addEventListener('click', () => {
-      onCancel();
+      onClose();
     });
 
   $element
     .querySelector('[data-target="cancel-button"]')!
     .addEventListener('click', () => {
-      onCancel();
+      onClose();
+    });
+
+  $element
+    .querySelector('[data-target="more-menu-button"]')!
+    .addEventListener('click', () => {
+      onOpenMoreMenu();
     });
 
   const $form = $element.querySelector(
@@ -256,12 +371,48 @@ export const createCreateNoteModal = ({
     const formData = new FormData($form);
     const title = (formData.get('title') || '') as string;
     const content = (formData.get('content') || '') as string;
-    onCreate({
+
+    onSave(note, {
       title,
       content,
-      isArchived: false,
     });
   });
+
+  (
+    $element.querySelector('[data-target="title-input"]')! as HTMLInputElement
+  ).value = note.title;
+  (
+    $element.querySelector(
+      '[data-target="content-textarea"]'
+    )! as HTMLInputElement
+  ).value = note.content;
+
+  const $moreMenu = $moreMenuTemplate.content.firstElementChild!.cloneNode(
+    true
+  ) as HTMLElement;
+
+  $element
+    .querySelector('[data-target="more-menu"]')!
+    .replaceWith(isMoreMenuOpen ? $moreMenu : '');
+
+  $moreMenu
+    .querySelector('[data-target="archive-menu-item"]')!
+    .addEventListener('click', () => {
+      if (note.isArchived) {
+        onUnarchive(note);
+      } else {
+        onArchive(note);
+      }
+    });
+
+  $moreMenu
+    .querySelector('[data-target="delete-menu-item"]')!
+    .addEventListener('click', () => {
+      onDelete(note);
+    });
+
+  $moreMenu.querySelector('[data-target="archive-menu-item"]')!.innerHTML =
+    note.isArchived ? 'Unarchive' : 'Archive';
 
   return $element;
 };
