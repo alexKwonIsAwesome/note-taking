@@ -80,4 +80,13 @@ Primary.args = {
       isArchived: false,
     },
   ],
+  createModal: {
+    isOpen: false,
+    onCreate: () => {
+      console.log('create');
+    },
+    onCancel: () => {
+      console.log('cancel');
+    },
+  },
 };

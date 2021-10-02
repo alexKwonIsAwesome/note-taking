@@ -29,6 +29,9 @@ const state = {
       isArchived: false,
     },
   ],
+  createModal: {
+    isOpen: false,
+  },
 };
 
 const render = () => {
@@ -42,6 +45,22 @@ const render = () => {
         render();
       },
       notes: state.notes,
+      createModal: {
+        isOpen: state.createModal.isOpen,
+        onCancel: () => {
+          state.createModal.isOpen = false;
+          render();
+        },
+        onCreate: (note) => {
+          state.notes.unshift(note);
+          state.createModal.isOpen = false;
+          render();
+        },
+      },
+      onCreateButtonClick: () => {
+        state.createModal.isOpen = true;
+        render();
+      },
     });
 
     const $currentApp = $root.firstElementChild;
