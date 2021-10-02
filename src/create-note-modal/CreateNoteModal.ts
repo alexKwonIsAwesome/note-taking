@@ -12,7 +12,7 @@ $template.innerHTML = /* html */ `
     <div
       class="
         flex
-        items-end
+        items-center
         justify-center
         min-h-screen
         pt-4
@@ -58,6 +58,7 @@ $template.innerHTML = /* html */ `
       <div
         class="
           inline-block
+          w-full
           align-bottom
           bg-white
           rounded-lg
