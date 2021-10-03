@@ -1,5 +1,6 @@
 import { Note } from './note-card/NoteCard';
 import { Category, createApp } from './app/App';
+import { applyDiff } from './applyDiff';
 
 interface State {
   activeCategory: Category;
@@ -55,7 +56,7 @@ const state: State = {
 
 const render = () => {
   requestAnimationFrame(() => {
-    const $root = document.querySelector('#root')!;
+    const $root = document.querySelector('#root')! as HTMLElement;
 
     const $app = createApp({
       activeCategory: state.activeCategory as 'notes' | 'archived',
@@ -127,12 +128,8 @@ const render = () => {
       },
     });
 
-    const $currentApp = $root.firstElementChild;
-    if ($currentApp) {
-      $currentApp.replaceWith($app);
-    } else {
-      $root.appendChild($app);
-    }
+    const $currentApp = $root.firstElementChild! as HTMLElement;
+    applyDiff($root, $currentApp, $app);
   });
 };
 
